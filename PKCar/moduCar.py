@@ -3,7 +3,7 @@ import pygame
 
 class cCar:
     def __init__(self, display_Width, display_Height):
-        self.Imgp = pygame.image.load('.\\Resources\\car.png')
+        self.Imgp = pygame.image.load('.\\img\\car.png')
         self.X = (display_Width * 0.45)
         self.Y = (display_Height * 0.8)
         self.Width = 49

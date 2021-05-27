@@ -1,5 +1,3 @@
-from PKGamePlay import moduGamePlay
-
-gameplay = moduGamePlay.cGamePlay()
-
-gameplay.output()
+import GamePlay
+car_racing = GamePlay.cGamePlay()
+car_racing.game_intro()

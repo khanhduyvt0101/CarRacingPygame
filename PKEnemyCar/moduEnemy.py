@@ -1,10 +1,11 @@
 
 
+from Car import cCar
 import pygame
 import random
 
 
-class cEnemyCar():
+class cEnemyCar(cCar):
     def __init__(self):
         self.Imgp = pygame.image.load('.\\img\\enemy_car_1.png')
         self.X = random.randrange(310, 450)
@@ -21,21 +22,3 @@ class cEnemyCar():
 
     def getHeight(self):
         return self.Height
-
-    def getImg(self):
-        return self.Imgp
-
-    def getX(self):
-        return self.X
-
-    def getY(self):
-        return self.Y
-
-    def getWidth(self):
-        return self.Width
-
-    def setX(self, X):
-        self.X = X
-
-    def setY(self, Y):
-        self.Y = Y

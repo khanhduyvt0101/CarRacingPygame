@@ -39,7 +39,7 @@ class cGamePlay:
         self.crashed = False
 
         # Init Car
-        self.car = Car.cCar(self.display_width, self.display_height)
+        self.car = Car.cMyCar(self.display_width, self.display_height)
 
         # Init Enemy
         self.enemycar = Enemy.cEnemyCar()
@@ -264,15 +264,9 @@ class cGamePlay:
         text = font.render("Score : " + str(count), True, self.black)
         self.gameDisplay.blit(text, (0, 0))
 
-    def display_credit(self):
-        font = pygame.font.SysFont("lucidaconsole", 14)
-        text = font.render("Thanks for playing!", True, self.white)
-        self.gameDisplay.blit(text, (600, 520))
 
-
-if __name__ == '__main__':
-    car_racing = cGamePlay()
-    car_racing.game_intro()
-    # car_racing.Game_loop()
-    # pygame.quit()
-    # quit()
+car_racing = cGamePlay()
+car_racing.game_intro()
+# car_racing.Game_loop()
+# pygame.quit()
+# quit()

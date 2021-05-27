@@ -1,7 +1,7 @@
 import random
 from time import sleep
 import pygame
-
+import pickle
 
 import PKCar.moduCar as Car
 import PKEnemyCar.moduEnemy as Enemy
@@ -67,7 +67,24 @@ class cGamePlay:
         car_racing.initialize()
         car_racing.Game_loop()
 
+    def topscore(self, score):
+
+        # load the previous score if it exists
+        try:
+            with open('score.dat', 'rb') as file:
+                temp = pickle.load(file)
+        except:  # save the score
+            with open('score.dat', 'wb') as file:
+                pickle.dump(score, file)
+        if temp < score:
+            temp = score
+            with open('score.dat', 'wb') as file:
+                pickle.dump(temp, file)
+        return temp
+
     def fcrashed(self):
+        self.topscore(self.count)
+
         pygame.mixer.music.stop()
         pygame.mixer.Sound.play(self.csound)
         self.gameDisplay.fill(self.yellow)
@@ -212,6 +229,7 @@ class cGamePlay:
 
             self.drawcar(self.car.getX(), self.car.getY())
             self.highscore(self.count)
+            self.texttopscore(self.topscore(self.count))
             self.count += 1
             if (self.count % 100 == 0):
                 self.enemycar.setSpeed(self.enemycar.getSpeed() + 1)
@@ -263,6 +281,11 @@ class cGamePlay:
         font = pygame.font.SysFont("arial", 20)
         text = font.render("Score : " + str(count), True, self.black)
         self.gameDisplay.blit(text, (0, 0))
+
+    def texttopscore(self, score):
+        font = pygame.font.SysFont("arial", 30)
+        text = font.render("Top score : " + str(score), True, self.black)
+        self.gameDisplay.blit(text, (0, 20))
 
 
 car_racing = cGamePlay()

@@ -47,6 +47,7 @@ class cGamePlay:
         # init Background
         self.bggrass = pygame.image.load(".\\img\\grass.jpg")
         self.bgImg = pygame.image.load(".\\img\\back_ground.jpg")
+        self.bgracing = pygame.image.load(".\\img\\bgracing.jpg")
         self.bg_x1 = (self.display_width / 2) - (360 / 2)
         self.bg_x2 = (self.display_width / 2) - (360 / 2)
         self.bg_y1 = 0
@@ -76,10 +77,12 @@ class cGamePlay:
         except:  # save the score
             with open('score.dat', 'wb') as file:
                 pickle.dump(score, file)
+            temp = 0
         if temp < score:
             temp = score
             with open('score.dat', 'wb') as file:
                 pickle.dump(temp, file)
+
         return temp
 
     def fcrashed(self):
@@ -89,9 +92,19 @@ class cGamePlay:
         pygame.mixer.Sound.play(self.csound)
         self.gameDisplay.fill(self.yellow)
         largeText = pygame.font.SysFont("comicsansms", 115)
+        nomarlText = pygame.font.SysFont("comicsansms", 40)
         TextSurf, TextRect = self.text_objects("You Crashed", largeText)
-        TextRect.center = ((self.display_width/2), (self.display_height/2))
+        TextRect.center = ((self.display_width/2), (self.display_height/4))
+        TextSurf1, TextRect1 = self.text_objects(
+            "Your score: " + str(self.count), nomarlText)
+        TextRect1.center = ((self.display_width/2), (self.display_height/2.5))
+        TextSurf2, TextRect2 = self.text_objects(
+            "Best score: " + str(self.topscore(self.count)), nomarlText)
+        TextRect2.center = ((self.display_width/2), (self.display_height/2))
+
         self.gameDisplay.blit(TextSurf, TextRect)
+        self.gameDisplay.blit(TextSurf1, TextRect1)
+        self.gameDisplay.blit(TextSurf2, TextRect2)
 
         while True:
             for event in pygame.event.get():
@@ -217,10 +230,10 @@ class cGamePlay:
                     print("x: {x}, y: {y}".format(
                         x=self.car.getX(), y=self.car.getX()))
 
-            # self.gameDisplay.fill(self.black)
+            self.gameDisplay.blit(self.bgracing, (0, 0))
             self.back_ground_raod()
 
-            self.run_enemy_car(self.enemycar.getX(), self.enemycar.getY())
+            self.draw_enemy_car(self.enemycar.getX(), self.enemycar.getY())
             self.enemycar.setY(self.enemycar.getY() + self.enemycar.getSpeed())
 
             if self.enemycar.getY() > self.display_height:
@@ -248,20 +261,20 @@ class cGamePlay:
             pygame.display.update()
             self.clock.tick(60)
 
-    def display_message(self, msg):
-        font = pygame.font.SysFont("comicsansms", 72, True)
-        text = font.render(msg, True, (255, 255, 255))
-        self.gameDisplay.blit(
-            text, (400 - text.get_width() // 2, 240 - text.get_height() // 2))
-        self.display_credit()
-        pygame.display.update()
-        self.clock.tick(60)
-        sleep(1)
+    # def display_message(self, msg):
+    #     font = pygame.font.SysFont("comicsansms", 72, True)
+    #     text = font.render(msg, True, (255, 255, 255))
+    #     self.gameDisplay.blit(
+    #         text, (400 - text.get_width() // 2, 240 - text.get_height() // 2))
+    #     self.display_credit()
+    #     pygame.display.update()
+    #     self.clock.tick(60)
+    #     sleep(1)
         # car_racing.initialize()
         # car_racing.game_intro()
 
     def back_ground_raod(self):
-        self.gameDisplay.blit(self.bggrass, (0, 0))
+
         self.gameDisplay.blit(self.bgImg, (self.bg_x1, self.bg_y1))
         self.gameDisplay.blit(self.bgImg, (self.bg_x2, self.bg_y2))
 
@@ -274,18 +287,18 @@ class cGamePlay:
         if self.bg_y2 >= self.display_height:
             self.bg_y2 = -600
 
-    def run_enemy_car(self, thingx, thingy):
+    def draw_enemy_car(self, thingx, thingy):
         self.gameDisplay.blit(self.enemycar.getImg(), (thingx, thingy))
 
     def highscore(self, count):
         font = pygame.font.SysFont("arial", 20)
-        text = font.render("Score : " + str(count), True, self.black)
-        self.gameDisplay.blit(text, (0, 0))
+        text = font.render("Score : " + str(count), True, self.white)
+        self.gameDisplay.blit(text, (5, 0))
 
     def texttopscore(self, score):
         font = pygame.font.SysFont("arial", 30)
-        text = font.render("Top score : " + str(score), True, self.black)
-        self.gameDisplay.blit(text, (0, 20))
+        text = font.render("Top score : " + str(score), True, self.white)
+        self.gameDisplay.blit(text, (5, 20))
 
 
 car_racing = cGamePlay()

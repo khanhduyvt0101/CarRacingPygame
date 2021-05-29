@@ -1,11 +1,31 @@
-
-
 from Car import cCar
 import pygame
 import random
 
 
 class cEnemyCar(cCar):
+    """
+    A class inherited of cCar, represent for enemy's car
+
+    Attributes
+    ------
+    Speed : int
+        car's speed to go down
+    Height : int
+        car's height
+
+    Methods
+    ------
+    getSpeed():
+        Returns car's speed
+    setSpeed(speed):
+        Set the speed of the car
+    getHeight():
+        Returns car's height
+
+    --
+    """
+
     def __init__(self):
         self.Imgp = pygame.image.load('.\\img\\enemy_car_1.png')
         self.X = random.randrange(310, 450)

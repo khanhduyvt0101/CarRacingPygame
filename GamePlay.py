@@ -47,10 +47,6 @@ class cGamePlay:
         Method for Game over
     play_again():
         Start new game after lose
-    instantiate_text(text, font):
-        Display text
-    instantiate_button(msg, x, y, w, h, ic, ac, action=None):
-        Create new button for UI
     draw_background():
         Drawing game background
     draw_player_car(car_x_coordinate, car_y_coordinate):

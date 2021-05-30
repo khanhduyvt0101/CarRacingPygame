@@ -6,7 +6,8 @@ import pickle
 import PKCar.moduCar as Car
 import PKEnemyCar.moduEnemy as Enemy
 
-pygame.init()
+import PKButton.moduButton as Button
+import PKText.moduText as Text
 
 
 class cGamePlay:
@@ -126,6 +127,9 @@ class cGamePlay:
         # Init sound
         pygame.mixer.music.load(".\\sound\\jazz.wav")
 
+        # # Init Button Package
+        # self.button = Button.cButton()
+
     def game_intro(self):
         """
         Display game intro panel in start
@@ -145,15 +149,17 @@ class cGamePlay:
 
             self.gameDisplay.fill((19, 182, 232))
             largeText = pygame.font.SysFont("comicsansms", 115)
-            TextSurf, TextRect = self.instantiate_text("Car Racing!", largeText)
+            text = Text.cText()
+            TextSurf, TextRect = text.Create(
+                "Car Racing!", largeText)
             TextRect.center = ((self.display_width/2),
                                (self.display_height/2-50))
             self.gameDisplay.blit(TextSurf, TextRect)
-
-            self.instantiate_button("PLAY!", self.display_width / 6 - 50, self.display_height * 4 / 5, 100, 50, self.yellow,
-                                    self.bright_green, self.game_start)
-            self.instantiate_button("QUIT", self.display_height / 6 + (self.display_width - self.display_width / 3), self.display_height * 4 / 5, 100, 50,
-                                    self.red, self.bright_red, self.game_quit)
+            lifebutton = Button.cButton(self.gameDisplay)
+            lifebutton.Create("PLAY!", self.display_width / 6 - 50, self.display_height * 4 / 5, 100, 50, self.yellow,
+                              self.bright_green,  self.game_start)
+            lifebutton.Create("QUIT", self.display_height / 6 + (self.display_width - self.display_width / 3), self.display_height * 4 / 5, 100, 50,
+                              self.red, self.bright_red,  self.game_quit)
 
             pygame.display.update()
             self.clock.tick(60)
@@ -231,12 +237,10 @@ class cGamePlay:
                 if self.car.getX() > self.enemycar.getX() and self.car.getX() < self.enemycar.getX() + self.enemycar.getWidth() or self.car.getX() + self.car.getWidth() > self.enemycar.getX() and self.car.getX() + self.car.getWidth() < self.enemycar.getX() + self.car.getWidth():
                     self.crashed = True
                     self.game_over()
-                    self.display_message("Game Over !!!")
 
             if self.car.getX() < 310 or self.car.getX() > 460:
                 self.crashed = True
                 self.game_over()
-                self.display_message("Game Over !!!")
 
             pygame.display.update()
             self.clock.tick(60)
@@ -267,14 +271,15 @@ class cGamePlay:
             # game display pausing panel
             self.gameDisplay.fill(self.yellow)
             largeText = pygame.font.SysFont("comicsansms", 115)
-            TextSurf, TextRect = self.instantiate_text("Paused", largeText)
+            text = Text.cText()
+            TextSurf, TextRect = text.Create("Paused", largeText)
             TextRect.center = ((self.display_width/2), (self.display_height/2))
             self.gameDisplay.blit(TextSurf, TextRect)
-
-            self.instantiate_button("Continue", self.display_width / 6 - 50, self.display_height * 4 / 5, 100, 50, self.green,
-                                    self.bright_green, self.game_unpause)
-            self.instantiate_button("Quit", self.display_height / 6 + (self.display_width - self.display_width / 3), self.display_height * 4 / 5, 100, 50,
-                                    self.red, self.bright_red, self.game_quit)
+            lifebutton = Button.cButton(self.gameDisplay)
+            lifebutton.Create("Continue", self.display_width / 6 - 50, self.display_height * 4 / 5, 100, 50, self.green,
+                              self.bright_green, self.game_unpause)
+            lifebutton.Create("Quit", self.display_height / 6 + (self.display_width - self.display_width / 3), self.display_height * 4 / 5, 100, 50,
+                              self.red, self.bright_red, self.game_quit)
 
             pygame.display.update()
             self.clock.tick(60)
@@ -285,7 +290,7 @@ class cGamePlay:
         :return: the game process continue
         """
         global pause
-        pygame.mixer.music.game_unpause()
+        pygame.mixer.music.unpause()
         pause = False
 
     def game_over(self):
@@ -307,12 +312,15 @@ class cGamePlay:
         # game over display panel
         largeText = pygame.font.SysFont("comicsansms", 115)
         nomarlText = pygame.font.SysFont("comicsansms", 40)
-        TextSurf, TextRect = self.instantiate_text("You Crashed", largeText)
+        temptext = Text.cText()
+        TextSurf, TextRect = temptext.Create("You Crashed", largeText)
         TextRect.center = ((self.display_width/2), (self.display_height/4))
-        TextSurf1, TextRect1 = self.instantiate_text(
+        temptext2 = Text.cText()
+        TextSurf1, TextRect1 = temptext2.Create(
             "Your score: " + str(self.count), nomarlText)
         TextRect1.center = ((self.display_width/2), (self.display_height/2.5))
-        TextSurf2, TextRect2 = self.instantiate_text(
+        temptext3 = Text.cText()
+        TextSurf2, TextRect2 = temptext3.Create(
             "Best score: " + str(self.save_highest_score(self.count)), nomarlText)
         TextRect2.center = ((self.display_width/2), (self.display_height/2))
 
@@ -326,11 +334,11 @@ class cGamePlay:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
-
-            self.instantiate_button("Play Again", self.display_width / 6 - 50, self.display_height * 4 / 5, 100, 50, self.green,
-                                    self.bright_green, self.play_again)
-            self.instantiate_button("Quit", self.display_height / 6 + (self.display_width - self.display_width / 3), self.display_height * 4 / 5, 100, 50,
-                                    self.red, self.bright_red, self.game_quit)
+            lifebutton = Button.cButton(self.gameDisplay)
+            lifebutton.Create("Play Again", self.display_width / 6 - 50, self.display_height * 4 / 5, 100, 50, self.green,
+                              self.bright_green, self.play_again)
+            lifebutton.Create("Quit", self.display_height / 6 + (self.display_width - self.display_width / 3), self.display_height * 4 / 5, 100, 50,
+                              self.red, self.bright_red, self.game_quit)
 
             pygame.display.update()
             self.clock.tick(60)
@@ -346,58 +354,9 @@ class cGamePlay:
     # end game process control
 
     # objects
-    def instantiate_text(self, text, font):
-        """
-        Display text
-        :param text: String, the text to display
-        :param font: pygame's system font , font of text
-        :return: text displayed
-        """
-        textsurface = font.render(text, True, self.black)
-        return textsurface, textsurface.get_rect()
-
-    def instantiate_button(self, msg, x, y, w, h, ic, ac, action=None):
-        """
-        Create new button for UI
-        :param msg: String, text label
-        :param x: double, position X
-        :param y: double, position Y
-        :param w: double, button width
-        :param h: double, button height
-        :param ic: tuple, color when not press
-        :param ac: tuple, color when pressed
-        :param action: function, action when button clicked
-        :return: do action when button clicked
-        """
-        mouse = pygame.mouse.get_pos()
-        click = pygame.mouse.get_pressed()
-        print(click)
-        if x+w > mouse[0] > x and y+h > mouse[1] > y:
-            pygame.draw.rect(self.gameDisplay, ac, (x, y, w, h))
-
-            if click[0] == 1 and action != None:
-                action()
-        else:
-            pygame.draw.rect(self.gameDisplay, ic, (x, y, w, h))
-
-        smallText = pygame.font.SysFont("comicsansms", 20)
-        textSurf, textRect = self.instantiate_text(msg, smallText)
-        textRect.center = ((x+(w/2)), (y+(h/2)))
-        self.gameDisplay.blit(textSurf, textRect)
-
-    # def display_message(self, msg):
-    #     font = pygame.font.SysFont("comicsansms", 72, True)
-    #     text = font.render(msg, True, (255, 255, 255))
-    #     self.gameDisplay.blit(
-    #         text, (400 - text.get_width() // 2, 240 - text.get_height() // 2))
-    #     self.display_credit()
-    #     pygame.display.update()
-    #     self.clock.tick(60)
-    #     sleep(1)
-        # car_racing.initialize()
-        # car_racing.game_intro()
 
     # game render section
+
     def draw_background(self):
         """
         Drawing game background

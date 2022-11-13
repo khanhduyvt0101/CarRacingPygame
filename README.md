@@ -27,3 +27,6 @@
 ## Author
  **Bui Trong Khanh Duy** - 18520654@gm.uit.edu.vn - 0908423067
  **Nguyen Minh Thang** - erastnguyen@gmail.com - 0836469040
+ 
+ ## How to run
+ - python main.py
